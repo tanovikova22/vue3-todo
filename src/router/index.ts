@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import TodoView from "@/views/TodoView.vue";
+import Home from "@/views/Home.vue";
+import Login from "@/views/Login.vue";
+import SignUp from "@/views/SignUp.vue";
 
 
 const router = createRouter({
@@ -7,10 +9,29 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'TodoView',
-      component: TodoView
+      name: 'Home',
+      component: Home,
+      meta: {
+        requireAuth: true
+      }
     },
+    {
+      path: "/login",
+      name: "Login",
+      component: Login,
+      meta: {
+        requireAuth: false
+      }
+    },
+    {
+      path: "/signup",
+      name: "SignIn",
+      component: SignUp,
+      meta: {
+        requireAuth: false
+      }
+    }
   ]
 })
 
-export default router
+export default router;

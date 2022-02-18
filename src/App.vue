@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router';
+
+import Header from "@/components/common/Header.vue";
+import AuthLayout from "@/layouts/AuthLayout.vue";
 </script>
 
 <template>
-  <header>
-  </header>
-
-  <RouterView />
+  <Header/>
+  <AuthLayout>
+    <RouterView />
+  </AuthLayout>
 </template>

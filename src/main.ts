@@ -1,14 +1,14 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import { store } from "./store"
-import "@/assets/index.scss";
+import "@/assets/styles/index.scss";
+import { createPinia } from 'pinia'
 
 import { initializeApp } from "firebase/app";
 
 const app = createApp(App)
 app.use(router);
-app.use(store);
+app.use(createPinia());
 
 initializeApp({
     apiKey: "AIzaSyBYPTUMncQ5GkOhikWT0MDR-1P1TiFLatE",
