@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
-import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import type { LoginData } from "@/types/LoginData";
+import AuthService from "@/services/auth";
+import type { UserCredential } from "firebase/auth";
 
 export interface Store {
     isAuthenticated: boolean;
@@ -15,35 +16,40 @@ export const authStore = defineStore('auth', {
     }),
 
     actions: {
-        signUp(payload: LoginData): Promise<void> {
-            const auth = getAuth();
-            return createUserWithEmailAndPassword(auth, payload.email, payload.password)
-                .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
-                    console.log(user)
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log(errorCode, errorMessage)
-                    // ..
-                });
+        signUp(payload: LoginData): Promise<UserCredential> {
+            try {
+                const response = AuthService.signUp(payload);
+                console.log(response)
+                this.isAuthenticated = true;
+                return response;
+            } catch (error) {
+                console.log(error);
+                //TODO: remove type assertion
+                throw new Error(error as string);
+            }
         },
-        login(payload: LoginData): Promise<void> {
-            const auth = getAuth();
-            return signInWithEmailAndPassword(auth, payload.email, payload.password)
-                .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
-                    // ...
-                    console.log(user)
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log(errorCode)
-                });
+        login(payload: LoginData): Promise<UserCredential> {
+            try {
+                const response = AuthService.login(payload);
+                console.log(response);
+                this.isAuthenticated = true;
+                return response;
+            } catch (error) {
+                console.log(error);
+                //TODO: remove type assertion
+                throw new Error(error as string);
+            }
+        },
+        logout(): Promise<void> {
+            try {
+                const response = AuthService.logout();
+                this.isAuthenticated = false;
+                return response;
+            } catch (error) {
+                console.log(error);
+                //TODO: remove type assertion
+                throw new Error(error as string);
+            }
         }
     }
 })
